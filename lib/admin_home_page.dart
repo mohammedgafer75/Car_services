@@ -1,6 +1,8 @@
+import 'package:car_services/services_page.dart';
 import 'package:flutter/material.dart';
 import 'package:car_services/request_page.dart';
 import 'package:car_services/change_password.dart';
+
 class AdminPage extends StatefulWidget {
   AdminPage({Key? key}) : super(key: key);
 
@@ -17,7 +19,7 @@ class _AdminPageState extends State<AdminPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Admin Panel'),
-         backgroundColor:  Colors.yellow[800],
+        backgroundColor: Colors.yellow[800],
       ),
       body: Container(
         alignment: Alignment.center,
@@ -32,20 +34,26 @@ class _AdminPageState extends State<AdminPage> {
               mainAxisSpacing: 16,
               crossAxisCount: 2,
               childAspectRatio: .90,
-              children:  [
+              children: [
                 Card_d(
-                  icon:
-                      Icon(Icons.accessibility, size: 30, color: Colors.white),
+                  icon: const Icon(Icons.accessibility,
+                      size: 30, color: Colors.white),
                   title: 'User Requset',
-                  nav: RequestPage(table:'Worker'),
+                  nav: RequestPage(table: 'Worker'),
                 ),
                 Card_d(
-                  icon:
-                      Icon(Icons.accessibility, size: 30, color: Colors.white),
+                  icon: const Icon(Icons.accessibility,
+                      size: 30, color: Colors.white),
                   title: 'Admin Requset',
-                  nav: RequestPage(table:'Admin'),
+                  nav: RequestPage(table: 'Admin'),
                 ),
-                Card_d(
+                const Card_d(
+                  icon: Icon(Icons.change_circle_outlined,
+                      size: 30, color: Colors.white),
+                  title: 'Change or Add Services',
+                  nav: ServicesPage(),
+                ),
+                const Card_d(
                   icon: Icon(Icons.change_circle_outlined,
                       size: 30, color: Colors.white),
                   title: 'Change Password',

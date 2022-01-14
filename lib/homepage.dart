@@ -76,26 +76,18 @@ class _HomePageState extends State<HomePage> {
     final data = MediaQuery.of(context);
     final width = data.size.width;
     final height = data.size.height;
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Services'),
-        backgroundColor: Colors.yellow[800],
-        actions: [
-          // IconButton(
-          //     onPressed: () {
-          //       Navigator.of(context).pushAndRemoveUntil(
-          //           MaterialPageRoute(
-          //               builder: (BuildContext context) => SignIn()),
-          //           (Route<dynamic> route) => false);
-          //     },
-          //     icon: const Icon(Icons.logout)),
-          StreamBuilder(
-              stream: FirebaseFirestore.instance
-                  .collection('Progress')
-                  .where('worker', isEqualTo: name)
-                  .snapshots(),
-              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                return IconBadge(
+    return StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection('Progress')
+            .where('worker', isEqualTo: name)
+            .snapshots(),
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Services'),
+              backgroundColor: Colors.yellow[800],
+              actions: [
+                IconBadge(
                   icon: const Icon(Icons.notifications_none),
                   itemCount: snapshot.data!.docs.length,
                   badgeColor: Colors.red,
@@ -106,138 +98,156 @@ class _HomePageState extends State<HomePage> {
                         MaterialPageRoute(
                             builder: (context) => ProgressPage()));
                   },
-                );
-              }),
-        ],
-      ),
-      body: StreamBuilder(
-          stream: FirebaseFirestore.instance
-              .collection('Progress')
-              .where('status', isEqualTo: 2)
-              .snapshots(),
-          builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (!snapshot.hasData) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else {
-              return ListView.builder(
-                  itemCount: snapshot.data!.docs.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: ExpansionTileCard(
-                            title:
-                                Text('${snapshot.data!.docs[index]['type']}'),
-                            subtitle: const Text('tab to get more information'),
-                            children: <Widget>[
-                              const Divider(
-                                thickness: 1.0,
-                                height: 1.0,
-                              ),
-                              Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 16.0,
-                                      vertical: 8.0,
+                ),
+              ],
+            ),
+            body: StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection('Progress')
+                    .where('status', isEqualTo: 2)
+                    .snapshots(),
+                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (!snapshot.hasData) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else {
+                    return ListView.builder(
+                        itemCount: snapshot.data!.docs.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: ExpansionTileCard(
+                                  title: Text(
+                                      '${snapshot.data!.docs[index]['type']}'),
+                                  subtitle:
+                                      const Text('tab to get more information'),
+                                  children: <Widget>[
+                                    const Divider(
+                                      thickness: 1.0,
+                                      height: 1.0,
                                     ),
-                                    child: Text(snapshot.data!.docs[index]
-                                        ['description']),
-                                  )),
-                              Row(
-                                children: [
-                                  ButtonBar(
-                                    alignment: MainAxisAlignment.spaceAround,
-                                    buttonHeight: 52.0,
-                                    buttonMinWidth: 90.0,
-                                    children: [
-                                      TextButton(
-                                          style: flatButtonStyle,
-                                          onPressed: () async {
-                                            Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                    builder: (BuildContext
-                                                            context) =>
-                                                        MapPage(
-                                                          id: snapshot.data!
-                                                              .docs[index].id,
-                                                              text1: snapshot.data!.docs[index]['type']
-                                                        )));
-                                          },
-                                          child: Column(
-                                            children: const <Widget>[
-                                              Icon(Icons.map),
-                                              Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                    vertical: 2.0),
-                                              ),
-                                              Text('Open on Map'),
-                                            ],
-                                          )),
-                                      ButtonBar(
-                                        alignment:
-                                            MainAxisAlignment.spaceAround,
-                                        buttonHeight: 52.0,
-                                        buttonMinWidth: 90.0,
-                                        children: [
-                                          TextButton(
-                                              style: flatButtonStyle,
-                                              onPressed: () async {
-                                                setState(() {
-                                                  showLoadingDialog(context);
-                                                });
+                                    Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 16.0,
+                                            vertical: 8.0,
+                                          ),
+                                          child: Text(snapshot.data!.docs[index]
+                                              ['description']),
+                                        )),
+                                    Row(
+                                      children: [
+                                        ButtonBar(
+                                          alignment:
+                                              MainAxisAlignment.spaceAround,
+                                          buttonHeight: 52.0,
+                                          buttonMinWidth: 90.0,
+                                          children: [
+                                            TextButton(
+                                                style: flatButtonStyle,
+                                                onPressed: () async {
+                                                  Navigator.of(context).push(
+                                                      MaterialPageRoute(
+                                                          builder: (BuildContext
+                                                                  context) =>
+                                                              MapPage(
+                                                                  id: snapshot
+                                                                      .data!
+                                                                      .docs[
+                                                                          index]
+                                                                      .id,
+                                                                  text1: snapshot
+                                                                          .data!
+                                                                          .docs[index]
+                                                                      [
+                                                                      'type'])));
+                                                },
+                                                child: Column(
+                                                  children: const <Widget>[
+                                                    Icon(Icons.map),
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 2.0),
+                                                    ),
+                                                    Text('Open on Map'),
+                                                  ],
+                                                )),
+                                            ButtonBar(
+                                              alignment:
+                                                  MainAxisAlignment.spaceAround,
+                                              buttonHeight: 52.0,
+                                              buttonMinWidth: 90.0,
+                                              children: [
+                                                TextButton(
+                                                    style: flatButtonStyle,
+                                                    onPressed: () async {
+                                                      setState(() {
+                                                        showLoadingDialog(
+                                                            context);
+                                                      });
 
-                                                try {
-                                                  auth.User? user = FirebaseAuth
-                                                      .instance.currentUser;
-                                                  String? name =
-                                                      user!.displayName;
-                                                  await FirebaseFirestore
-                                                      .instance
-                                                      .collection('Progress')
-                                                      .doc(snapshot
-                                                          .data!.docs[index].id)
-                                                      .update({
-                                                    'status': 1,
-                                                    'worker': name
-                                                  });
-                                                  setState(() {
-                                                    Navigator.of(context).pop();
-                                                    showBar(
-                                                        context,
-                                                        "Request Accepted check your progress",
-                                                        1);
-                                                  });
-                                                } catch (e) {
-                                                  setState(() {
-                                                    showBar(context,
-                                                        'somethings wrong', 0);
-                                                  });
-                                                }
-                                              },
-                                              child: Column(
-                                                children: const <Widget>[
-                                                  Icon(Icons.accessibility),
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 2.0),
-                                                  ),
-                                                  Text('Accept Request'),
-                                                ],
-                                              )),
-                                        ],
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ]));
-                  });
-            }
-          }),
-    );
+                                                      try {
+                                                        auth.User? user =
+                                                            FirebaseAuth
+                                                                .instance
+                                                                .currentUser;
+                                                        String? name =
+                                                            user!.displayName;
+                                                        await FirebaseFirestore
+                                                            .instance
+                                                            .collection(
+                                                                'Progress')
+                                                            .doc(snapshot.data!
+                                                                .docs[index].id)
+                                                            .update({
+                                                          'status': 1,
+                                                          'worker': name
+                                                        });
+                                                        setState(() {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                          showBar(
+                                                              context,
+                                                              "Request Accepted check your progress",
+                                                              1);
+                                                        });
+                                                      } catch (e) {
+                                                        setState(() {
+                                                          showBar(
+                                                              context,
+                                                              'somethings wrong',
+                                                              0);
+                                                        });
+                                                      }
+                                                    },
+                                                    child: Column(
+                                                      children: const <Widget>[
+                                                        Icon(Icons
+                                                            .accessibility),
+                                                        Padding(
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                                  vertical:
+                                                                      2.0),
+                                                        ),
+                                                        Text('Accept Request'),
+                                                      ],
+                                                    )),
+                                              ],
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ]));
+                        });
+                  }
+                }),
+          );
+        });
   }
 
   void showBar(BuildContext context, String msg, int ch) {

@@ -50,6 +50,7 @@ dependencies:
   google_maps_flutter: ^2.0.6
   geocoding: ^2.0.1
   expansion_tile_card: ^2.0.0
+  cached_network_image: ^3.1.0
 
 
 dev_dependencies:
