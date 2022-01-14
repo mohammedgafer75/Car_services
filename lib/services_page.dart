@@ -48,61 +48,68 @@ class _ServicesPageState extends State<ServicesPage> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Alert(
+                        showDialog(
                             context: context,
-                            closeIcon: const Icon(Icons.close),
-                            content: StreamBuilder(
-                                stream: FirebaseFirestore.instance
-                                    .collection('images')
-                                    .snapshots(),
-                                builder: (context,
-                                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                                  return GridView.builder(
-                                      gridDelegate:
-                                          const SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 2,
-                                        crossAxisSpacing: 16,
-                                        mainAxisSpacing: 16,
-                                        childAspectRatio: .90,
-                                      ),
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        return GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              url = snapshot.data!.docs[index]
-                                                  ['image'];
-                                              Navigator.of(context).pop();
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                  content: StreamBuilder(
+                                      stream: FirebaseFirestore.instance
+                                          .collection('images')
+                                          .snapshots(),
+                                      builder: (context,
+                                          AsyncSnapshot<QuerySnapshot>
+                                              snapshot) {
+                                        return GridView.builder(
+                                            itemCount:
+                                                snapshot.data!.docs.length,
+                                            gridDelegate:
+                                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount: 2,
+                                              crossAxisSpacing: 16,
+                                              mainAxisSpacing: 16,
+                                              childAspectRatio: .90,
+                                            ),
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  setState(() {
+                                                    url = snapshot.data!
+                                                        .docs[index]['image'];
+                                                    Navigator.of(context).pop();
+                                                  });
+                                                },
+                                                child: Container(
+                                                  height: height / 6,
+                                                  width: width / 6,
+                                                  clipBehavior: Clip.antiAlias,
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                  child: CachedNetworkImage(
+                                                    fit: BoxFit.contain,
+                                                    imageUrl: snapshot.data!
+                                                        .docs[index]['image'],
+                                                    progressIndicatorBuilder:
+                                                        (context, url,
+                                                                downloadProgress) =>
+                                                            Center(
+                                                      child: CircularProgressIndicator(
+                                                          value:
+                                                              downloadProgress
+                                                                  .progress),
+                                                    ),
+                                                    errorWidget:
+                                                        (context, url, error) =>
+                                                            (const Icon(
+                                                                Icons.error)),
+                                                  ),
+                                                ),
+                                              );
                                             });
-                                          },
-                                          child: Container(
-                                            height: height / 6,
-                                            width: width / 6,
-                                            clipBehavior: Clip.antiAlias,
-                                            decoration: const BoxDecoration(
-                                              shape: BoxShape.circle,
-                                            ),
-                                            child: CachedNetworkImage(
-                                              fit: BoxFit.cover,
-                                              imageUrl: snapshot
-                                                  .data!.docs[index]['image'],
-                                              progressIndicatorBuilder:
-                                                  (context, url,
-                                                          downloadProgress) =>
-                                                      Center(
-                                                child:
-                                                    CircularProgressIndicator(
-                                                        value: downloadProgress
-                                                            .progress),
-                                              ),
-                                              errorWidget:
-                                                  (context, url, error) =>
-                                                      (const Icon(Icons.error)),
-                                            ),
-                                          ),
-                                        );
-                                      });
-                                })).show();
+                                      }));
+                            });
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -113,8 +120,8 @@ class _ServicesPageState extends State<ServicesPage> {
                         ),
                         width: data.size.width / 3.5,
                         height: data.size.height / 15,
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 4,
+                        padding: const EdgeInsets.all(
+                          8,
                         ),
                         child: const Center(
                           child: Text(
@@ -148,7 +155,7 @@ class _ServicesPageState extends State<ServicesPage> {
                               await FirebaseFirestore.instance
                                   .collection('Services')
                                   .doc()
-                                  .set({'name': name, 'image': url});
+                                  .set({'name': name.text, 'image': url});
                               setState(() {
                                 Navigator.of(context).pop();
                                 showBar(context, "Service Added", 1);
@@ -218,15 +225,20 @@ class _ServicesPageState extends State<ServicesPage> {
                                                         .collection('Services')
                                                         .doc(snapshot.data!
                                                             .docs[index].id)
-                                                        .update({'name': name});
+                                                        .update({
+                                                      'name': name.text
+                                                    });
                                                     setState(() {
                                                       Navigator.of(context)
                                                           .pop();
+
                                                       showBar(context,
                                                           "Service updated", 1);
                                                     });
                                                   } catch (e) {
                                                     setState(() {
+                                                      Navigator.of(context)
+                                                          .pop();
                                                       showBar(
                                                           context,
                                                           'somethings wrong',
@@ -272,6 +284,7 @@ class _ServicesPageState extends State<ServicesPage> {
                                           });
                                         } catch (e) {
                                           setState(() {
+                                            Navigator.of(context).pop();
                                             showBar(
                                                 context, 'somethings wrong', 0);
                                           });
