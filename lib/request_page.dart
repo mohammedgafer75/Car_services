@@ -14,7 +14,7 @@ class _RequestPageState extends State<RequestPage> {
     return Scaffold(
         backgroundColor: const Color.fromRGBO(19, 26, 44, 1.0),
         appBar: AppBar(
-          backgroundColor:  Colors.yellow[800],
+          backgroundColor: Colors.yellow[800],
         ),
         body: Padding(
           padding: const EdgeInsets.all(10),
@@ -101,8 +101,10 @@ class _RequestPageState extends State<RequestPage> {
 
   Future accept(String id) async {
     try {
-      var res =
-          await FirebaseFirestore.instance.collection('Admin').doc(id).update({
+      var res = await FirebaseFirestore.instance
+          .collection(widget.table)
+          .doc(id)
+          .update({
         "aprrov": 1,
       });
       setState(() {

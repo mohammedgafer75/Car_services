@@ -180,85 +180,18 @@ class _ServicesPageState extends State<ServicesPage> {
               );
             } else {
               return ListView.builder(
+                  itemCount: snapshot.data!.docs.length,
                   itemBuilder: (BuildContext context, int index) {
-                return ExpansionTileCard(
-                    title: Text('${snapshot.data!.docs[index]['name']}'),
-                    subtitle: const Text('tab to edit or delete'),
-                    children: <Widget>[
-                      const Divider(
-                        thickness: 1.0,
-                        height: 1.0,
-                      ),
-                      Row(
-                        children: [
-                          ButtonBar(
-                            alignment: MainAxisAlignment.spaceAround,
-                            buttonHeight: 52.0,
-                            buttonMinWidth: 90.0,
+                    return ExpansionTileCard(
+                        title: Text('${snapshot.data!.docs[index]['name']}'),
+                        subtitle: const Text('tab to edit or delete'),
+                        children: <Widget>[
+                          const Divider(
+                            thickness: 1.0,
+                            height: 1.0,
+                          ),
+                          Row(
                             children: [
-                              TextButton(
-                                  style: flatButtonStyle,
-                                  onPressed: () async {
-                                    Alert(
-                                        context: context,
-                                        title: 'Change service name',
-                                        closeIcon: const Icon(Icons.close),
-                                        content: TextFormField(
-                                          controller: name,
-                                          decoration: const InputDecoration(
-                                              hintText:
-                                                  'Enter new Service name'),
-                                        ),
-                                        buttons: [
-                                          DialogButton(
-                                              child: const Text('Save'),
-                                              onPressed: () async {
-                                                if (name.text.isEmpty) {
-                                                  setState(() {
-                                                    showBar(context,
-                                                        'please enter name', 0);
-                                                  });
-                                                } else {
-                                                  try {
-                                                    await FirebaseFirestore
-                                                        .instance
-                                                        .collection('Services')
-                                                        .doc(snapshot.data!
-                                                            .docs[index].id)
-                                                        .update({
-                                                      'name': name.text
-                                                    });
-                                                    setState(() {
-                                                      Navigator.of(context)
-                                                          .pop();
-
-                                                      showBar(context,
-                                                          "Service updated", 1);
-                                                    });
-                                                  } catch (e) {
-                                                    setState(() {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                      showBar(
-                                                          context,
-                                                          'somethings wrong',
-                                                          0);
-                                                    });
-                                                  }
-                                                }
-                                              })
-                                        ]).show();
-                                  },
-                                  child: Column(
-                                    children: const <Widget>[
-                                      Icon(Icons.share),
-                                      Padding(
-                                        padding:
-                                            EdgeInsets.symmetric(vertical: 2.0),
-                                      ),
-                                      Text('Change Service Name'),
-                                    ],
-                                  )),
                               ButtonBar(
                                 alignment: MainAxisAlignment.spaceAround,
                                 buttonHeight: 52.0,
@@ -267,28 +200,60 @@ class _ServicesPageState extends State<ServicesPage> {
                                   TextButton(
                                       style: flatButtonStyle,
                                       onPressed: () async {
-                                        setState(() {
-                                          showLoadingDialog(context);
-                                        });
+                                        Alert(
+                                            context: context,
+                                            title: 'Change service name',
+                                            closeIcon: const Icon(Icons.close),
+                                            content: TextFormField(
+                                              controller: name,
+                                              decoration: const InputDecoration(
+                                                  hintText:
+                                                      'Enter new Service name'),
+                                            ),
+                                            buttons: [
+                                              DialogButton(
+                                                  child: const Text('Save'),
+                                                  onPressed: () async {
+                                                    if (name.text.isEmpty) {
+                                                      setState(() {
+                                                        showBar(
+                                                            context,
+                                                            'please enter name',
+                                                            0);
+                                                      });
+                                                    } else {
+                                                      try {
+                                                        await FirebaseFirestore
+                                                            .instance
+                                                            .collection(
+                                                                'Services')
+                                                            .doc(snapshot.data!
+                                                                .docs[index].id)
+                                                            .update({
+                                                          'name': name.text
+                                                        });
+                                                        setState(() {
+                                                          Navigator.of(context)
+                                                              .pop();
 
-                                        try {
-                                          await FirebaseFirestore.instance
-                                              .collection('Services')
-                                              .doc(
-                                                  snapshot.data!.docs[index].id)
-                                              .delete();
-                                          setState(() {
-                                            Navigator.of(context).pop();
-                                            showBar(
-                                                context, "Service deleted", 1);
-                                          });
-                                        } catch (e) {
-                                          setState(() {
-                                            Navigator.of(context).pop();
-                                            showBar(
-                                                context, 'somethings wrong', 0);
-                                          });
-                                        }
+                                                          showBar(
+                                                              context,
+                                                              "Service updated",
+                                                              1);
+                                                        });
+                                                      } catch (e) {
+                                                        setState(() {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                          showBar(
+                                                              context,
+                                                              'somethings wrong',
+                                                              0);
+                                                        });
+                                                      }
+                                                    }
+                                                  })
+                                            ]).show();
                                       },
                                       child: Column(
                                         children: const <Widget>[
@@ -297,17 +262,63 @@ class _ServicesPageState extends State<ServicesPage> {
                                             padding: EdgeInsets.symmetric(
                                                 vertical: 2.0),
                                           ),
-                                          Text('Delete Service'),
+                                          Text('Change Service Name'),
                                         ],
                                       )),
+                                  ButtonBar(
+                                    alignment: MainAxisAlignment.spaceAround,
+                                    buttonHeight: 52.0,
+                                    buttonMinWidth: 90.0,
+                                    children: [
+                                      TextButton(
+                                          style: flatButtonStyle,
+                                          onPressed: () async {
+                                            setState(() {
+                                              showLoadingDialog(context);
+                                            });
+
+                                            try {
+                                              await FirebaseFirestore.instance
+                                                  .collection('Services')
+                                                  .doc(snapshot
+                                                      .data!.docs[index].id)
+                                                  .delete();
+                                              setState(() {
+                                                Navigator.of(context).pop();
+                                                showBar(context,
+                                                    "Service deleted", 1);
+                                              });
+                                            } catch (e) {
+                                              setState(() {
+                                                Navigator.of(context).pop();
+                                                showBar(context,
+                                                    'somethings wrong', 0);
+                                              });
+                                            }
+                                          },
+                                          child: Column(
+                                            children: const <Widget>[
+                                              Icon(Icons.delete_forever,
+                                                  color: Colors.red),
+                                              Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 2.0),
+                                              ),
+                                              Text(
+                                                'Delete Service',
+                                                style: TextStyle(
+                                                    color: Colors.red),
+                                              ),
+                                            ],
+                                          )),
+                                    ],
+                                  ),
                                 ],
-                              ),
+                              )
                             ],
-                          )
-                        ],
-                      ),
-                    ]);
-              });
+                          ),
+                        ]);
+                  });
             }
           }),
     );
