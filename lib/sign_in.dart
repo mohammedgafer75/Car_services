@@ -92,13 +92,7 @@ class _SignInState extends State<SignIn> {
                                   if (val!.isEmpty) {
                                     return "please enter your email";
                                   }
-                                  String pattern =
-                                      r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
-                                      r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
-                                      r"{0,253}[a-zA-Z0-9])?)*$";
-                                  RegExp regex = RegExp(pattern);
-                                  if (!regex.hasMatch(val))
-                                    return 'Enter a valid email address';
+                                  
                                 },
                                 decoration: InputDecoration(
                                   errorBorder: OutlineInputBorder(
