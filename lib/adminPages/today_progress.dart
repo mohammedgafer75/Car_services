@@ -13,6 +13,7 @@ class _TodayProgressState extends State<TodayProgress> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text('Today Progress'),
         backgroundColor: Colors.yellow[800],
       ),
       body: StreamBuilder(
@@ -42,7 +43,7 @@ class _TodayProgressState extends State<TodayProgress> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8)),
                           child: SizedBox(
-                            height: 130,
+                            height: 150,
                             width: 70,
                             child: ListView(children: [
                               Padding(
@@ -57,7 +58,51 @@ class _TodayProgressState extends State<TodayProgress> {
                                   ),
                                 ),
                               ),
-                              Center(
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 18, left: 18),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Text(
+                                      ' Maintenance worker: ',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                          color: Colors.black),
+                                    ),
+                                    Text(
+                                      ' ${snapshot.data!.docs[index]['worker']} ',
+                                      style: const TextStyle(
+                                          fontSize: 16, color: Colors.black),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 18, left: 18),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Text(
+                                      ' User: ',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                          color: Colors.black),
+                                    ),
+                                    Text(
+                                      ' ${snapshot.data!.docs[index]['name']} ',
+                                      style: const TextStyle(
+                                          fontSize: 16, color: Colors.black),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 15, left: 18),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -70,7 +115,7 @@ class _TodayProgressState extends State<TodayProgress> {
                                     ),
                                     snapshot.data!.docs[index]['status'] == 1
                                         ? const Text(
-                                            ' In Progress ',
+                                            ' Done',
                                             style: TextStyle(
                                                 fontSize: 16,
                                                 color: Colors.black),
@@ -93,92 +138,6 @@ class _TodayProgressState extends State<TodayProgress> {
                                   ],
                                 ),
                               ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 18, left: 18),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Text(
-                                      ' Maintenance worker: ',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
-                                          color: Colors.black),
-                                    ),
-                                    snapshot.data!.docs[index]['status'] == 1
-                                        ? Text(
-                                            ' ${snapshot.data!.docs[index]['worker']} ',
-                                            style: const TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.black),
-                                          )
-                                        : const Text(
-                                            ' No available workers ',
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.black),
-                                          ),
-                                  ],
-                                ),
-                              ),
-                              Center(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Text(
-                                      ' User Status: ',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
-                                          color: Colors.black),
-                                    ),
-                                    snapshot.data!.docs[index]['UserAprrov'] ==
-                                            1
-                                        ? const Text(
-                                            ' Done ',
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.black),
-                                          )
-                                        : const Text(
-                                            ' Waiting ',
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.black),
-                                          )
-                                  ],
-                                ),
-                              ),
-                              Center(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Text(
-                                      ' Worker Status: ',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
-                                          color: Colors.black),
-                                    ),
-                                    snapshot.data!.docs[index]
-                                                ['WorkerAprrov'] ==
-                                            1
-                                        ? const Text(
-                                            ' Done ',
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.black),
-                                          )
-                                        : const Text(
-                                            ' Waiting ',
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.black),
-                                          )
-                                  ],
-                                ),
-                              )
                             ]),
                           ),
                         ),

@@ -117,7 +117,7 @@ class _HomepageState extends State<Homepage> {
                                 });
                                 var userWallet = await FirebaseFirestore
                                     .instance
-                                    .collection('userwallet')
+                                    .collection('workerwallet')
                                     .where('uid', isEqualTo: user.uid)
                                     .get();
                                 if (userWallet.docs.isNotEmpty) {

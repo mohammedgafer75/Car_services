@@ -46,11 +46,9 @@ class _WorkersState extends State<Workers> {
                                 child: CircularProgressIndicator(),
                               );
                             } else {
-                              int bal = 0;
-                              snapshot.data!.docs.forEach((element) {
-                                int b = element['balance'];
-                                bal += b;
-                              });
+                              num bal =
+                                  10000 - snapshot.data!.docs[0]['balance'];
+
                               return ExpansionTile(
                                 iconColor: Colors.yellow[800],
                                 textColor: Colors.yellow[800],

@@ -27,7 +27,6 @@ class _UserProgressPage extends State<UserProgressPage> {
           stream: FirebaseFirestore.instance
               .collection('Progress')
               .where('workerid', isEqualTo: user.uid)
-              .where('status', isEqualTo: 0)
               .snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData) {
@@ -82,196 +81,264 @@ class _UserProgressPage extends State<UserProgressPage> {
                                     style: const TextStyle(
                                         fontSize: 14, color: Colors.black)),
                               ),
+                              snapshot.data!.docs[index]['status'] == 0
+                                  ? const Padding(
+                                      padding: EdgeInsets.only(
+                                          top: 18, left: 18),
+                                      child: Text('Status: waiting',
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.black)),
+                                    )
+                                  : snapshot.data!.docs[index]['status'] == 1
+                                      ? const Padding(
+                                          padding: EdgeInsets.only(
+                                              top: 18, left: 18),
+                                          child: Text('Status: Done',
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.black)),
+                                        )
+                                      : const Padding(
+                                          padding: EdgeInsets.only(
+                                              top: 18, left: 18),
+                                          child: Text('Status: Cancled',
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.black)),
+                                        ),
                               Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 8.0),
-                                      child: TextButton(
-                                          style: ButtonStyle(
-                                              padding: MaterialStateProperty.all(
-                                                  const EdgeInsets.only(
-                                                      top: 10,
-                                                      bottom: 10,
-                                                      left: 15,
-                                                      right: 15)),
-                                              backgroundColor: MaterialStateProperty.all(
-                                                  const Color.fromRGBO(
-                                                      19, 26, 44, 1.0)),
-                                              shape: MaterialStateProperty.all<
-                                                      RoundedRectangleBorder>(
-                                                  RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(13),
-                                                      side: const BorderSide(color: Color.fromRGBO(19, 26, 44, 1.0))))),
-                                          onPressed: () {
-                                            Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                    builder: (BuildContext
-                                                            context) =>
-                                                        MapPage(
-                                                            id: snapshot.data!
-                                                                .docs[index].id,
-                                                            text1: snapshot
-                                                                    .data!
-                                                                    .docs[index]
-                                                                ['type'])));
-                                          },
-                                          child: const Text(
-                                            'Open in Map',
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          )),
-                                    ),
+                                    snapshot.data!.docs[index]['status'] == 0
+                                        ? Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 8.0),
+                                            child: TextButton(
+                                                style: ButtonStyle(
+                                                    padding:
+                                                        MaterialStateProperty.all(
+                                                            const EdgeInsets.only(
+                                                                top: 10,
+                                                                bottom: 10,
+                                                                left: 15,
+                                                                right: 15)),
+                                                    backgroundColor:
+                                                        MaterialStateProperty.all(
+                                                            const Color.fromRGBO(
+                                                                19, 26, 44, 1.0)),
+                                                    shape: MaterialStateProperty.all<
+                                                            RoundedRectangleBorder>(
+                                                        RoundedRectangleBorder(
+                                                            borderRadius: BorderRadius.circular(13),
+                                                            side: const BorderSide(color: Color.fromRGBO(19, 26, 44, 1.0))))),
+                                                onPressed: () {
+                                                  Navigator.of(context).push(
+                                                      MaterialPageRoute(
+                                                          builder: (BuildContext
+                                                                  context) =>
+                                                              MapPage(
+                                                                  id: snapshot
+                                                                      .data!
+                                                                      .docs[
+                                                                          index]
+                                                                      .id,
+                                                                  text1: snapshot
+                                                                          .data!
+                                                                          .docs[index]
+                                                                      [
+                                                                      'type'])));
+                                                },
+                                                child: const Text(
+                                                  'Open in Map',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                )),
+                                          )
+                                        : const SizedBox(),
                                     const SizedBox(
                                       width: 3,
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 8.0),
-                                      child: TextButton(
-                                          style: ButtonStyle(
-                                              padding: MaterialStateProperty.all(
-                                                  const EdgeInsets.only(
-                                                      top: 10,
-                                                      bottom: 10,
-                                                      left: 15,
-                                                      right: 15)),
-                                              backgroundColor: MaterialStateProperty.all(
-                                                  const Color.fromRGBO(
-                                                      19, 26, 44, 1.0)),
-                                              shape: MaterialStateProperty.all<
-                                                      RoundedRectangleBorder>(
-                                                  RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(13),
-                                                      side: const BorderSide(color: Color.fromRGBO(19, 26, 44, 1.0))))),
-                                          onPressed: () async {
-                                            setState(() {
-                                              showLoadingDialog(context);
-                                            });
-                                            try {
-                                              await FirebaseFirestore.instance
-                                                  .collection('Progress')
-                                                  .doc(snapshot
-                                                      .data!.docs[index].id)
-                                                  .update({
-                                                'status': 2,
-                                              });
-                                              setState(() {
-                                                Navigator.of(context).pop();
-                                                showBar(context,
-                                                    "Progress Canceled", 1);
-                                              });
-                                            } catch (e) {
-                                              setState(() {
-                                                Navigator.of(context).pop();
-                                                showBar(
-                                                    context, e.toString(), 0);
-                                              });
-                                            }
-                                          },
-                                          child: const Text(
-                                            'Cancel',
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          )),
-                                    ),
+                                    snapshot.data!.docs[index]['status'] == 0
+                                        ? Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 8.0),
+                                            child: TextButton(
+                                                style: ButtonStyle(
+                                                    padding:
+                                                        MaterialStateProperty.all(
+                                                            const EdgeInsets.only(
+                                                                top: 10,
+                                                                bottom: 10,
+                                                                left: 15,
+                                                                right: 15)),
+                                                    backgroundColor:
+                                                        MaterialStateProperty.all(
+                                                            const Color.fromRGBO(
+                                                                19, 26, 44, 1.0)),
+                                                    shape: MaterialStateProperty.all<
+                                                            RoundedRectangleBorder>(
+                                                        RoundedRectangleBorder(
+                                                            borderRadius: BorderRadius.circular(13),
+                                                            side: const BorderSide(color: Color.fromRGBO(19, 26, 44, 1.0))))),
+                                                onPressed: () async {
+                                                  setState(() {
+                                                    showLoadingDialog(context);
+                                                  });
+                                                  try {
+                                                    await FirebaseFirestore
+                                                        .instance
+                                                        .collection('Progress')
+                                                        .doc(snapshot.data!
+                                                            .docs[index].id)
+                                                        .update({
+                                                      'status': 2,
+                                                    });
+                                                    setState(() {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                      showBar(
+                                                          context,
+                                                          "Progress Canceled",
+                                                          1);
+                                                    });
+                                                  } catch (e) {
+                                                    setState(() {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                      showBar(context,
+                                                          e.toString(), 0);
+                                                    });
+                                                  }
+                                                },
+                                                child: const Text(
+                                                  'Cancel',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                )),
+                                          )
+                                        : const SizedBox(),
                                     const SizedBox(
                                       width: 3,
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 8.0),
-                                      child: TextButton(
-                                          style: ButtonStyle(
-                                              padding: MaterialStateProperty.all(
-                                                  const EdgeInsets.only(
-                                                      top: 10,
-                                                      bottom: 10,
-                                                      left: 15,
-                                                      right: 15)),
-                                              backgroundColor: MaterialStateProperty.all(
-                                                  const Color.fromRGBO(
-                                                      19, 26, 44, 1.0)),
-                                              shape: MaterialStateProperty.all<
-                                                      RoundedRectangleBorder>(
-                                                  RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(13),
-                                                      side: const BorderSide(color: Color.fromRGBO(19, 26, 44, 1.0))))),
-                                          onPressed: () async {
-                                            setState(() {
-                                              showLoadingDialog(context);
-                                            });
-                                            try {
-                                              var userid = snapshot
-                                                  .data!.docs[index]['uid'];
-                                              var workerid = snapshot.data!
-                                                  .docs[index]['workerid'];
-                                              var userWallet =
-                                                  await FirebaseFirestore
-                                                      .instance
-                                                      .collection('userwallet')
-                                                      .where('uid',
-                                                          isEqualTo: userid)
-                                                      .get();
-                                              var newbal = userWallet.docs[0]
-                                                      ['balance'] -
-                                                  100;
-                                              var workerWallet =
-                                                  await FirebaseFirestore
-                                                      .instance
-                                                      .collection(
-                                                          'workerwallet')
-                                                      .where('uid',
-                                                          isEqualTo: workerid)
-                                                      .get();
-                                              var newrequest = workerWallet
-                                                      .docs[0]['request'] -
-                                                  1;
-                                              await FirebaseFirestore.instance
-                                                  .collection('userwallet')
-                                                  .doc(userWallet.docs[0].id)
-                                                  .update({'balance': newbal});
-                                              await FirebaseFirestore.instance
-                                                  .collection('workerwallet')
-                                                  .doc(workerWallet.docs[0].id)
-                                                  .update(
-                                                      {'request': newrequest});
-                                              await FirebaseFirestore.instance
-                                                  .collection('adminwallet')
-                                                  .doc()
-                                                  .set({
-                                                'workerid': user.uid,
-                                                'day': DateTime.now().day,
-                                                'month': DateTime.now().month,
-                                                'balance': 100
-                                              });
-                                              await FirebaseFirestore.instance
-                                                  .collection('Progress')
-                                                  .doc(snapshot
-                                                      .data!.docs[index].id)
-                                                  .update({
-                                                'status': 1,
-                                              });
-                                              setState(() {
-                                                Navigator.of(context).pop();
-                                                showBar(context,
-                                                    "Progress Done", 1);
-                                              });
-                                            } catch (e) {
-                                              setState(() {
-                                                Navigator.of(context).pop();
-                                                showBar(
-                                                    context, e.toString(), 0);
-                                              });
-                                            }
-                                          },
-                                          child: const Text(
-                                            'Done',
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          )),
-                                    )
+                                    snapshot.data!.docs[index]['status'] == 0
+                                        ? Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 8.0),
+                                            child: TextButton(
+                                                style: ButtonStyle(
+                                                    padding:
+                                                        MaterialStateProperty.all(
+                                                            const EdgeInsets.only(
+                                                                top: 10,
+                                                                bottom: 10,
+                                                                left: 15,
+                                                                right: 15)),
+                                                    backgroundColor:
+                                                        MaterialStateProperty.all(
+                                                            const Color.fromRGBO(
+                                                                19, 26, 44, 1.0)),
+                                                    shape: MaterialStateProperty.all<
+                                                            RoundedRectangleBorder>(
+                                                        RoundedRectangleBorder(
+                                                            borderRadius: BorderRadius.circular(13),
+                                                            side: const BorderSide(color: Color.fromRGBO(19, 26, 44, 1.0))))),
+                                                onPressed: () async {
+                                                  setState(() {
+                                                    showLoadingDialog(context);
+                                                  });
+                                                  try {
+                                                    var userid = snapshot.data!
+                                                        .docs[index]['uid'];
+                                                    var workerid = snapshot
+                                                            .data!.docs[index]
+                                                        ['workerid'];
+                                                    var userWallet =
+                                                        await FirebaseFirestore
+                                                            .instance
+                                                            .collection(
+                                                                'userwallet')
+                                                            .where('uid',
+                                                                isEqualTo:
+                                                                    userid)
+                                                            .get();
+                                                    var newbal =
+                                                        userWallet.docs[0]
+                                                                ['balance'] -
+                                                            100;
+                                                    var workerWallet =
+                                                        await FirebaseFirestore
+                                                            .instance
+                                                            .collection(
+                                                                'workerwallet')
+                                                            .where('uid',
+                                                                isEqualTo:
+                                                                    workerid)
+                                                            .get();
+                                                    var newrequest =
+                                                        workerWallet.docs[0]
+                                                                ['request'] -
+                                                            1;
+                                                    await FirebaseFirestore
+                                                        .instance
+                                                        .collection(
+                                                            'userwallet')
+                                                        .doc(userWallet
+                                                            .docs[0].id)
+                                                        .update({
+                                                      'balance': newbal
+                                                    });
+                                                    await FirebaseFirestore
+                                                        .instance
+                                                        .collection(
+                                                            'workerwallet')
+                                                        .doc(workerWallet
+                                                            .docs[0].id)
+                                                        .update({
+                                                      'request': newrequest
+                                                    });
+                                                    await FirebaseFirestore
+                                                        .instance
+                                                        .collection(
+                                                            'adminwallet')
+                                                        .doc()
+                                                        .set({
+                                                      'workerid': user.uid,
+                                                      'day': DateTime.now().day,
+                                                      'month':
+                                                          DateTime.now().month,
+                                                      'balance': 100
+                                                    });
+                                                    await FirebaseFirestore
+                                                        .instance
+                                                        .collection('Progress')
+                                                        .doc(snapshot.data!
+                                                            .docs[index].id)
+                                                        .update({
+                                                      'status': 1,
+                                                    });
+                                                    setState(() {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                      showBar(context,
+                                                          "Progress Done", 1);
+                                                    });
+                                                  } catch (e) {
+                                                    setState(() {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                      showBar(context,
+                                                          e.toString(), 0);
+                                                    });
+                                                  }
+                                                },
+                                                child: const Text(
+                                                  'Done',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                )),
+                                          )
+                                        : const SizedBox()
                                   ])
                             ]),
                           ),
