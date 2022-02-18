@@ -1,6 +1,7 @@
 import 'package:car_services/background-image.dart';
 import 'package:car_services/http.dart';
-import 'package:car_services/homepage.dart';
+import 'package:car_services/userPages/homepage.dart';
+import 'package:car_services/userPages/progress_page.dart';
 import 'package:car_services/sign_up.dart';
 import 'package:car_services/text_field_input.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -80,18 +81,16 @@ class _UserSignInState extends State<UserSignIn> {
                                   right: width / 100, left: width / 100),
                               height: size.height * 0.1,
                               width: size.width * 0.8,
-                             // decoration: BoxDecoration(
+                              // decoration: BoxDecoration(
                               //  color: Colors.yellow[900]!.withOpacity(0.5),
-                               // borderRadius: BorderRadius.circular(16),
-                             // ),
+                              // borderRadius: BorderRadius.circular(16),
+                              // ),
                               child: TextFormField(
                                 controller: email,
-
                                 validator: (val) {
                                   if (val!.isEmpty) {
                                     return "please enter your email";
                                   }
-                                  
                                 },
                                 decoration: InputDecoration(
                                   errorBorder: OutlineInputBorder(
@@ -251,7 +250,7 @@ class _UserSignInState extends State<UserSignIn> {
                                                     builder:
                                                         (BuildContext
                                                                 context) =>
-                                                            HomePage()),
+                                                            const Homepage()),
                                                 (Route<dynamic> route) =>
                                                     false);
                                       });
@@ -259,7 +258,7 @@ class _UserSignInState extends State<UserSignIn> {
                                   }
                                 }
                               },
-                              child:  Text(
+                              child: Text(
                                 'SignIn',
                                 style: TextStyle(
                                     fontSize: 20.0, color: Colors.yellow[800]),
@@ -329,7 +328,7 @@ class _UserSignInState extends State<UserSignIn> {
 
   Future go(dynamic res) async {
     Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (BuildContext context) => HomePage()),
+        MaterialPageRoute(builder: (BuildContext context) => Homepage()),
         (Route<dynamic> route) => false);
   }
 }

@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class SignUp extends StatefulWidget {
   SignUp({Key? key, required this.table}) : super(key: key);
@@ -392,15 +393,31 @@ class _SignUpState extends State<SignUp> {
                             int? a = int.tryParse(number.text);
                             auth.User? user = FirebaseAuth.instance.currentUser;
                             user!.updateDisplayName(name.text.trim());
-                             
+
                             await user.reload();
-                            Map<String, dynamic> data = <String, dynamic>{
-                              "uid": user.uid,
-                              "name": name.text,
-                              "phone": number.text,
-                              "email": email.text,
-                              "aprrov":0,
-                            };
+                            late Map<String, dynamic> data;
+                            // ignore: unused_local_variable
+                            LatLng la = const LatLng(0, 0);
+                            if (widget.table == 'Worker') {
+                              data = <String, dynamic>{
+                                "uid": user.uid,
+                                "name": name.text,
+                                "phone": number.text,
+                                "email": email.text,
+                                "status": false,
+                                "location": GeoPoint(la.latitude, la.longitude),
+                                "aprrov": 0,
+                              };
+                            } else {
+                              data = <String, dynamic>{
+                                "uid": user.uid,
+                                "name": name.text,
+                                "phone": number.text,
+                                "email": email.text,
+                                "aprrov": 0,
+                              };
+                            }
+
                             await FirebaseFirestore.instance
                                 .collection(widget.table)
                                 .doc()
@@ -413,9 +430,10 @@ class _SignUpState extends State<SignUp> {
                           }
                         }
                       },
-                      child:  Text(
+                      child: Text(
                         "Register",
-                        style: TextStyle(fontSize: 20.0, color: Colors.yellow[800]),
+                        style: TextStyle(
+                            fontSize: 20.0, color: Colors.yellow[800]),
                       ),
                     ),
                   ),

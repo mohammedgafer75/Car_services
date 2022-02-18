@@ -4,7 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
 class MapPage extends StatefulWidget {
-  MapPage({Key? key, required this.id,required this.text1}) : super(key: key);
+  MapPage({Key? key, required this.id, required this.text1}) : super(key: key);
   String id;
   String text1;
   @override
@@ -33,18 +33,8 @@ class _MapPageState extends State<MapPage> {
     var _id = widget.id;
     LatLng latLng = new LatLng(lng, lat);
     _contacts.add({"location": latLng, "id": _id});
-    // res.docs.forEach((element) {
-    //   GeoPoint geoPoint = element['map_location'];
-    //   double lat = geoPoint.latitude;
-    //   double lng = geoPoint.longitude;
-    //   print('h${res.docs.length}');
-    //   LatLng latLng = new LatLng(lng, lat);
-    //   var _id = element.id;
 
-    //   _contacts.add({"location": latLng, "id": _id});
-    // });
     return _contacts;
-    // return res;
   }
 
   @override
@@ -59,8 +49,8 @@ class _MapPageState extends State<MapPage> {
             builder: (context, snapshot) {
               if (_contacts.isNotEmpty) {
                 createMarkers(context);
-                return _contacts.length == 0
-                    ? Center(
+                return _contacts.isEmpty
+                    ? const Center(
                         child: Text('No Locations Founded'),
                       )
                     : Stack(
@@ -73,7 +63,7 @@ class _MapPageState extends State<MapPage> {
                         ],
                       );
               } else {
-                return Center(
+                return const Center(
                   child: CircularProgressIndicator(),
                 );
               }
@@ -101,7 +91,7 @@ class _MapPageState extends State<MapPage> {
         // icon: await _getAssetIcon(context).then((value) => value),
         infoWindow: InfoWindow(
             title: widget.text1,
-           // snippet: 'Tap top Open',
+            // snippet: 'Tap top Open',
             onTap: () {
               print(contact['id']);
               // Navigator.of(context).push(MaterialPageRoute(

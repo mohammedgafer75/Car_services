@@ -15,6 +15,7 @@ class ServicesPage extends StatefulWidget {
 
 class _ServicesPageState extends State<ServicesPage> {
   TextEditingController name = TextEditingController();
+  TextEditingController price = TextEditingController();
   final ButtonStyle flatButtonStyle = TextButton.styleFrom(
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(4.0)),
@@ -45,6 +46,11 @@ class _ServicesPageState extends State<ServicesPage> {
                       controller: name,
                       decoration:
                           const InputDecoration(hintText: 'Enter Service name'),
+                    ),
+                    TextFormField(
+                      controller: price,
+                      decoration: const InputDecoration(
+                          hintText: 'Enter new Service price'),
                     ),
                     GestureDetector(
                       onTap: () {
@@ -155,7 +161,11 @@ class _ServicesPageState extends State<ServicesPage> {
                               await FirebaseFirestore.instance
                                   .collection('Services')
                                   .doc()
-                                  .set({'name': name.text, 'image': url});
+                                  .set({
+                                'name': name.text,
+                                'price': int.tryParse(price.text.toString()),
+                                'image': url
+                              });
                               setState(() {
                                 Navigator.of(context).pop();
                                 showBar(context, "Service Added", 1);
@@ -208,7 +218,7 @@ class _ServicesPageState extends State<ServicesPage> {
                                               controller: name,
                                               decoration: const InputDecoration(
                                                   hintText:
-                                                      'Enter new Service name'),
+                                                      'Enter new Service price'),
                                             ),
                                             buttons: [
                                               DialogButton(
@@ -257,7 +267,7 @@ class _ServicesPageState extends State<ServicesPage> {
                                       },
                                       child: Column(
                                         children: const <Widget>[
-                                          Icon(Icons.share),
+                                          Icon(Icons.edit),
                                           Padding(
                                             padding: EdgeInsets.symmetric(
                                                 vertical: 2.0),

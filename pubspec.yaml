@@ -51,7 +51,11 @@ dependencies:
   geocoding: ^2.0.1
   expansion_tile_card: ^2.0.0
   cached_network_image: ^3.1.0
-
+  shared_preferences: ^2.0.13
+  shared_preferences_web: ^2.0.3
+  data_table_2: ^2.2.0
+  list_tile_switch: 
+  flutter_polyline_points: ^1.0.0
 
 dev_dependencies:
   flutter_test:

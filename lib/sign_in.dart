@@ -1,7 +1,7 @@
 import 'package:car_services/background-image.dart';
 import 'package:car_services/http.dart';
-import 'package:car_services/homepage.dart';
-import 'package:car_services/admin_home_page.dart';
+import 'package:car_services/userPages/progress_page.dart';
+import 'package:car_services/adminPages/admin_home_page.dart';
 import 'package:car_services/sign_up.dart';
 import 'package:car_services/text_field_input.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -81,18 +81,16 @@ class _SignInState extends State<SignIn> {
                                   right: width / 100, left: width / 100),
                               height: size.height * 0.1,
                               width: size.width * 0.8,
-                             // decoration: BoxDecoration(
+                              // decoration: BoxDecoration(
                               //  color: Colors.white.withOpacity(0.5),
-                               // borderRadius: BorderRadius.circular(16),
-                             // ),
+                              // borderRadius: BorderRadius.circular(16),
+                              // ),
                               child: TextFormField(
                                 controller: email,
-
                                 validator: (val) {
                                   if (val!.isEmpty) {
                                     return "please enter your email";
                                   }
-                                  
                                 },
                                 decoration: InputDecoration(
                                   errorBorder: OutlineInputBorder(
@@ -260,7 +258,7 @@ class _SignInState extends State<SignIn> {
                                   }
                                 }
                               },
-                              child:  Text(
+                              child: Text(
                                 'SignIn',
                                 style: TextStyle(
                                     fontSize: 20.0, color: Colors.yellow[800]),
@@ -330,7 +328,7 @@ class _SignInState extends State<SignIn> {
 
   Future go(dynamic res) async {
     Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (BuildContext context) => HomePage()),
+        MaterialPageRoute(builder: (BuildContext context) => AdminPage()),
         (Route<dynamic> route) => false);
   }
 }

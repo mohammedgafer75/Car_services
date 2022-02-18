@@ -1,6 +1,10 @@
-import 'package:car_services/services_page.dart';
+import 'package:car_services/adminPages/offers_page.dart';
+import 'package:car_services/adminPages/services_dashboard.dart';
+import 'package:car_services/adminPages/services_page.dart';
+import 'package:car_services/adminPages/all_progress.dart';
+import 'package:car_services/adminPages/workshop_request.dart';
 import 'package:flutter/material.dart';
-import 'package:car_services/request_page.dart';
+import 'package:car_services/adminPages/request_page.dart';
 import 'package:car_services/change_password.dart';
 
 class AdminPage extends StatefulWidget {
@@ -24,10 +28,9 @@ class _AdminPageState extends State<AdminPage> {
       body: Container(
         alignment: Alignment.center,
         margin: EdgeInsets.only(
-          top: height / 5,
+          top: height / 7,
         ),
-        padding: EdgeInsets.only(
-            top: height / 40, left: width / 8, right: width / 8),
+        padding: EdgeInsets.only(left: width / 8, right: width / 8),
         child: Center(
           child: GridView.count(
               crossAxisSpacing: 16,
@@ -41,6 +44,12 @@ class _AdminPageState extends State<AdminPage> {
                   title: 'User Requset',
                   nav: RequestPage(table: 'Worker'),
                 ),
+                const Card_d(
+                  icon:
+                      Icon(Icons.accessibility, size: 30, color: Colors.white),
+                  title: 'WorkShop Requset',
+                  nav: WorkshopRequest(),
+                ),
                 Card_d(
                   icon: const Icon(Icons.accessibility,
                       size: 30, color: Colors.white),
@@ -48,10 +57,20 @@ class _AdminPageState extends State<AdminPage> {
                   nav: RequestPage(table: 'Admin'),
                 ),
                 const Card_d(
-                  icon: Icon(Icons.change_circle_outlined,
+                  icon: Icon(Icons.supervised_user_circle_sharp,
                       size: 30, color: Colors.white),
-                  title: 'Change or Add Services',
+                  title: 'Services',
                   nav: ServicesPage(),
+                ),
+                const Card_d(
+                  icon: Icon(Icons.dashboard, size: 30, color: Colors.white),
+                  title: 'DashBoard',
+                  nav: ServicesDashboard(),
+                ),
+                const Card_d(
+                  icon: Icon(Icons.local_offer, size: 30, color: Colors.white),
+                  title: 'Offers Page',
+                  nav: OffersPage(),
                 ),
                 const Card_d(
                   icon: Icon(Icons.change_circle_outlined,
