@@ -1,5 +1,6 @@
 import 'package:car_services/adminPages/admin_home_page.dart';
 import 'package:car_services/userPages/add_workshop.dart';
+import 'package:car_services/userPages/myworkshop.dart';
 import 'package:car_services/userPages/progress_page.dart';
 import 'package:car_services/userPages/user_progress.dart';
 import 'package:car_services/userPages/user_services_page.dart';
@@ -120,7 +121,22 @@ class _HomepageState extends State<Homepage> {
                                     .collection('workerwallet')
                                     .where('uid', isEqualTo: user.uid)
                                     .get();
-                                if (userWallet.docs.isNotEmpty) {
+                                var userworkshop = await FirebaseFirestore
+                                    .instance
+                                    .collection('workshop')
+                                    .where('uid', isEqualTo: user.uid)
+                                    .get();
+                                for (var item in userworkshop.docs) {
+                                  int? month = int.tryParse(item['month']);
+                                  if (month! + 1 == DateTime.now().month) {
+                                    await FirebaseFirestore.instance
+                                        .collection('workshop')
+                                        .doc(item.id)
+                                        .update({'status': 0});
+                                  }
+                                }
+
+                                if (userWallet.docs[0]['request'] != 0) {
                                   double? lat = _currentPosition.latitude;
                                   double? lon = _currentPosition.longitude;
                                   LatLng po = LatLng(lat!, lon!);
@@ -177,11 +193,12 @@ class _HomepageState extends State<Homepage> {
                                         title: 'Wallet Page',
                                         nav: Wallet(),
                                       ),
-                                      // const Card_d(
-                                      //   icon: Icon(Icons.add_box, size: 30, color: Colors.white),
-                                      //   title: 'Add Service',
-                                      //   nav: UserServicesPage(),
-                                      // ),
+                                      Card_d(
+                                        icon: Icon(Icons.work,
+                                            size: 30, color: Colors.white),
+                                        title: 'My WorkShop',
+                                        nav: MyWorkshop(),
+                                      ),
                                       Card_d(
                                         icon: Icon(Icons.add_box,
                                             size: 30, color: Colors.white),

@@ -83,8 +83,8 @@ class _UserProgressPage extends State<UserProgressPage> {
                               ),
                               snapshot.data!.docs[index]['status'] == 0
                                   ? const Padding(
-                                      padding: EdgeInsets.only(
-                                          top: 18, left: 18),
+                                      padding:
+                                          EdgeInsets.only(top: 18, left: 18),
                                       child: Text('Status: waiting',
                                           style: TextStyle(
                                               fontSize: 14,
@@ -288,15 +288,29 @@ class _UserProgressPage extends State<UserProgressPage> {
                                                         .update({
                                                       'balance': newbal
                                                     });
-                                                    await FirebaseFirestore
-                                                        .instance
-                                                        .collection(
-                                                            'workerwallet')
-                                                        .doc(workerWallet
-                                                            .docs[0].id)
-                                                        .update({
-                                                      'request': newrequest
-                                                    });
+                                                    if (newrequest == 0) {
+                                                      await FirebaseFirestore
+                                                          .instance
+                                                          .collection(
+                                                              'workerwallet')
+                                                          .doc(workerWallet
+                                                              .docs[0].id)
+                                                          .update({
+                                                        'request': newrequest,
+                                                        'status': false
+                                                      });
+                                                    } else {
+                                                      await FirebaseFirestore
+                                                          .instance
+                                                          .collection(
+                                                              'workerwallet')
+                                                          .doc(workerWallet
+                                                              .docs[0].id)
+                                                          .update({
+                                                        'request': newrequest
+                                                      });
+                                                    }
+
                                                     await FirebaseFirestore
                                                         .instance
                                                         .collection(
