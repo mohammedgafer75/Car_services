@@ -63,8 +63,8 @@ class _AdminPageState extends State<AdminPage> {
                   nav: ServicesPage(),
                 ),
                 const Card_d(
-                  icon: Icon(Icons.dashboard, size: 30, color: Colors.white),
-                  title: 'DashBoard',
+                  icon: Icon(Icons.report, size: 30, color: Colors.white),
+                  title: 'Reports',
                   nav: ServicesDashboard(),
                 ),
                 const Card_d(

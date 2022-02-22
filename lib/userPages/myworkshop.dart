@@ -23,8 +23,10 @@ class _MyWorkshop extends State<MyWorkshop> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('My WorkShop'),
+        backgroundColor: Colors.yellow[800],
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.yellow[800],
         onPressed: () {
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => const AddWorkshop()));
@@ -47,7 +49,6 @@ class _MyWorkshop extends State<MyWorkshop> {
                   child: Text('No data Founded'),
                 );
               } else {
-                var time = DateTime.now().add(const Duration(days: 30));
                 return ListView.builder(
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (BuildContext context, int index) {
@@ -57,13 +58,13 @@ class _MyWorkshop extends State<MyWorkshop> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8)),
                           child: SizedBox(
-                            height: 130,
+                            height: 150,
                             width: 70,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                    'Workershop Name: ${snapshot.data!.docs[index]['name']}'),
+                                    'Workershop Name: ${snapshot.data!.docs[index]['workshopName']}'),
                                 const SizedBox(
                                   height: 5,
                                 ),
@@ -81,10 +82,10 @@ class _MyWorkshop extends State<MyWorkshop> {
                                         style: ButtonStyle(
                                             padding: MaterialStateProperty.all(
                                                 EdgeInsets.only(
-                                                    top: height / 45,
-                                                    bottom: height / 45,
-                                                    left: width / 10,
-                                                    right: width / 10)),
+                                                    top: height / 60,
+                                                    bottom: height / 60,
+                                                    left: width / 40,
+                                                    right: width / 40)),
                                             backgroundColor:
                                                 MaterialStateProperty.all(
                                               Colors.yellow[800],
@@ -92,15 +93,9 @@ class _MyWorkshop extends State<MyWorkshop> {
                                             shape: MaterialStateProperty.all<
                                                     RoundedRectangleBorder>(
                                                 RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            13),
-                                                    side: const BorderSide(
-                                                        color: Color.fromRGBO(
-                                                            19,
-                                                            26,
-                                                            44,
-                                                            1.0))))),
+                                              borderRadius:
+                                                  BorderRadius.circular(13),
+                                            ))),
                                         onPressed: () async {
                                           Alert(
                                               title: 'New subscription',

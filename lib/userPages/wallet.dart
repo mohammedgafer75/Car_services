@@ -182,6 +182,9 @@ class _WalletState extends State<Wallet> {
                                                                     'month': DateTime
                                                                             .now()
                                                                         .month,
+                                                                    'year': DateTime
+                                                                            .now()
+                                                                        .year,
                                                                     'balance': snapshot
                                                                             .data!
                                                                             .docs[index]

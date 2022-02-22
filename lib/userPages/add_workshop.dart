@@ -225,6 +225,8 @@ class _AddWorkshopState extends State<AddWorkshop> {
                                               .set({
                                             'workerid': user.uid,
                                             'day': DateTime.now().day,
+                                            'month': DateTime.now().day,
+                                            'year': DateTime.now().year,
                                             'balance': bal
                                           });
                                           await prefs.remove('lon');

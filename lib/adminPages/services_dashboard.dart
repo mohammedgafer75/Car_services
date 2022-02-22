@@ -20,7 +20,7 @@ class _ServicesDashboardState extends State<ServicesDashboard> {
     final height = data.size.height;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Services Dashboard'),
+        title: const Text('Reports'),
         backgroundColor: Colors.yellow[800],
       ),
       body: Container(

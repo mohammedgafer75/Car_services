@@ -53,7 +53,7 @@ class _UserProgressPage extends State<UserProgressPage> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8)),
                           child: SizedBox(
-                            height: 160,
+                            height: 190,
                             width: 70,
                             child: ListView(children: [
                               Center(
@@ -78,6 +78,14 @@ class _UserProgressPage extends State<UserProgressPage> {
                                     const EdgeInsets.only(top: 18, left: 18),
                                 child: Text(
                                     'Price: ${snapshot.data!.docs[index]['price']}',
+                                    style: const TextStyle(
+                                        fontSize: 14, color: Colors.black)),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 18, left: 18),
+                                child: Text(
+                                    'Information: ${snapshot.data!.docs[index]['description']}',
                                     style: const TextStyle(
                                         fontSize: 14, color: Colors.black)),
                               ),
@@ -288,7 +296,7 @@ class _UserProgressPage extends State<UserProgressPage> {
                                                         .update({
                                                       'balance': newbal
                                                     });
-                                                    if (newrequest == 0) {
+                                                    if (newrequest <= 0) {
                                                       await FirebaseFirestore
                                                           .instance
                                                           .collection(
@@ -296,7 +304,7 @@ class _UserProgressPage extends State<UserProgressPage> {
                                                           .doc(workerWallet
                                                               .docs[0].id)
                                                           .update({
-                                                        'request': newrequest,
+                                                        'request': 0,
                                                         'status': false
                                                       });
                                                     } else {
@@ -319,6 +327,7 @@ class _UserProgressPage extends State<UserProgressPage> {
                                                         .set({
                                                       'workerid': user.uid,
                                                       'day': DateTime.now().day,
+                                                      'year': DateTime.now().year,
                                                       'month':
                                                           DateTime.now().month,
                                                       'balance': 100

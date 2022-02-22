@@ -13,7 +13,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:icon_badge/icon_badge.dart';
 import 'package:location/location.dart';
 import 'package:location/location.dart' as loca;
-import 'package:list_tile_switch/list_tile_switch.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -110,67 +109,158 @@ class _HomepageState extends State<Homepage> {
                             right: width / 8),
                         child: Column(
                           children: [
-                            ListTileSwitch(
+                            SwitchListTile(
                               value: snapshot.data!.docs[0]['status'],
                               onChanged: (value) async {
                                 setState(() {
                                   showAboutDialog(context: context);
                                 });
-                                var userWallet = await FirebaseFirestore
-                                    .instance
-                                    .collection('workerwallet')
-                                    .where('uid', isEqualTo: user.uid)
+                                var progress = await FirebaseFirestore.instance
+                                    .collection('Progress')
+                                    .where('workerid', isEqualTo: user.uid)
                                     .get();
-                                var userworkshop = await FirebaseFirestore
-                                    .instance
-                                    .collection('workshop')
-                                    .where('uid', isEqualTo: user.uid)
-                                    .get();
-                                for (var item in userworkshop.docs) {
-                                  int? month = int.tryParse(item['month']);
-                                  if (month! + 1 == DateTime.now().month) {
-                                    await FirebaseFirestore.instance
-                                        .collection('workshop')
-                                        .doc(item.id)
-                                        .update({'status': 0});
+                                int a = 0;
+                                for (var item in progress.docs) {
+                                  if (item['status'] == 0) {
+                                    a = 1;
                                   }
                                 }
+                                if (a == 0) {
+                                  var userWallet = await FirebaseFirestore
+                                      .instance
+                                      .collection('workerwallet')
+                                      .where('uid', isEqualTo: user.uid)
+                                      .get();
+                                  var userworkshop = await FirebaseFirestore
+                                      .instance
+                                      .collection('workshop')
+                                      .where('uid', isEqualTo: user.uid)
+                                      .get();
+                                  for (var item in userworkshop.docs) {
+                                    int? month =
+                                        int.tryParse(item['month'].toString());
+                                    if (month! + 1 == DateTime.now().month) {
+                                      await FirebaseFirestore.instance
+                                          .collection('workshop')
+                                          .doc(item.id)
+                                          .update({'status': 0});
+                                    }
+                                  }
 
-                                if (userWallet.docs[0]['request'] != 0) {
-                                  double? lat = _currentPosition.latitude;
-                                  double? lon = _currentPosition.longitude;
-                                  LatLng po = LatLng(lat!, lon!);
+                                  if (userWallet.docs[0]['request'] != 0) {
+                                    double? lat = _currentPosition.latitude;
+                                    double? lon = _currentPosition.longitude;
+                                    LatLng po = LatLng(lat!, lon!);
 
-                                  _value = value;
-                                  await FirebaseFirestore.instance
-                                      .collection('Worker')
-                                      .doc(snapshot.data!.docs[0].id)
-                                      .update({
-                                    'status': value,
-                                    'location': GeoPoint(lat, lon)
-                                  });
+                                    _value = value;
+                                    await FirebaseFirestore.instance
+                                        .collection('Worker')
+                                        .doc(snapshot.data!.docs[0].id)
+                                        .update({
+                                      'status': value,
+                                      'location': GeoPoint(lat, lon)
+                                    });
 
-                                  setState(() {
-                                    Navigator.of(context).pop();
-                                  });
+                                    setState(() {
+                                      Navigator.of(context).pop();
+                                    });
+                                  } else {
+                                    setState(() {
+                                      Navigator.of(context).pop();
+                                      showBar(
+                                          context, 'you dont have a wallet', 0);
+                                    });
+                                  }
                                 } else {
                                   setState(() {
-                                    showBar(
-                                        context, 'you dont have a wallet', 0);
                                     Navigator.of(context).pop();
+                                    showBar(context, 'you  have a Progress', 0);
                                   });
                                 }
                               },
-                              visualDensity: VisualDensity.comfortable,
-                              switchType: SwitchType.cupertino,
-                              switchActiveColor: Colors.indigo,
                               title: !snapshot.data!.docs[0]['status']
                                   ? const Text('OffLine')
                                   : const Text('OnLine'),
                             ),
+                            // ListTileSwitch(
+                            //   value: snapshot.data!.docs[0]['status'],
+                            //   onChanged: (value) async {
+                            //     setState(() {
+                            //       showAboutDialog(context: context);
+                            //     });
+                            //     var progress = await FirebaseFirestore.instance
+                            //         .collection('Progress')
+                            //         .where('workerid', isEqualTo: user.uid)
+                            //         .get();
+                            //     int a = 0;
+                            //     for (var item in progress.docs) {
+                            //       if (item['status'] == 0) {
+                            //         a = 1;
+                            //       }
+                            //     }
+                            //     if (a == 0) {
+                            //       var userWallet = await FirebaseFirestore
+                            //           .instance
+                            //           .collection('workerwallet')
+                            //           .where('uid', isEqualTo: user.uid)
+                            //           .get();
+                            //       var userworkshop = await FirebaseFirestore
+                            //           .instance
+                            //           .collection('workshop')
+                            //           .where('uid', isEqualTo: user.uid)
+                            //           .get();
+                            //       for (var item in userworkshop.docs) {
+                            //         int? month =
+                            //             int.tryParse(item['month'].toString());
+                            //         if (month! + 1 == DateTime.now().month) {
+                            //           await FirebaseFirestore.instance
+                            //               .collection('workshop')
+                            //               .doc(item.id)
+                            //               .update({'status': 0});
+                            //         }
+                            //       }
+
+                            //       if (userWallet.docs[0]['request'] != 0) {
+                            //         double? lat = _currentPosition.latitude;
+                            //         double? lon = _currentPosition.longitude;
+                            //         LatLng po = LatLng(lat!, lon!);
+
+                            //         _value = value;
+                            //         await FirebaseFirestore.instance
+                            //             .collection('Worker')
+                            //             .doc(snapshot.data!.docs[0].id)
+                            //             .update({
+                            //           'status': value,
+                            //           'location': GeoPoint(lat, lon)
+                            //         });
+
+                            //         setState(() {
+                            //           Navigator.of(context).pop();
+                            //         });
+                            //       } else {
+                            //         setState(() {
+                            //           Navigator.of(context).pop();
+                            //           showBar(
+                            //               context, 'you dont have a wallet', 0);
+                            //         });
+                            //       }
+                            //     } else {
+                            //       setState(() {
+                            //         Navigator.of(context).pop();
+                            //         showBar(context, 'you  have a Progress', 0);
+                            //       });
+                            //     }
+                            //   },
+                            //   visualDensity: VisualDensity.comfortable,
+                            //   switchType: SwitchType.cupertino,
+                            //   switchActiveColor: Colors.indigo,
+                            //   title: !snapshot.data!.docs[0]['status']
+                            //       ? const Text('OffLine')
+                            //       : const Text('OnLine'),
+                            // ),
                             Container(
-                              padding: const EdgeInsets.only(top: 90),
-                              height: 300,
+                              padding: const EdgeInsets.only(top: 80),
+                              height: 400,
                               width: 300,
                               child: Center(
                                 child: GridView.count(

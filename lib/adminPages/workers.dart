@@ -42,12 +42,19 @@ class _WorkersState extends State<Workers> {
                           builder:
                               (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                             if (!snapshot.hasData) {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
+                              return SizedBox();
                             } else {
-                              num bal =
-                                  10000 - snapshot.data!.docs[0]['balance'];
+                              print(snapshot.data!.docs.length);
+                              // num bal = 0 ;
+                              // int count = 0;
+                              // for (var item in snapshot.data!.docs) {
+                              //   bal.add({
+                              //     'index': count,
+                              //     'bal': 1000 - item['balance']
+                              //   });
+                              // }
+                              // num bal =
+                              //     10000 - snapshot.data!.docs[0]['balance'];
 
                               return ExpansionTile(
                                 iconColor: Colors.yellow[800],
@@ -61,7 +68,6 @@ class _WorkersState extends State<Workers> {
                                 children: [
                                   Column(
                                     children: [
-                                      Text('profit from the worker: $bal'),
                                       TextButton(
                                           onPressed: () {
                                             Navigator.push(
