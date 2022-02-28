@@ -1,25 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class TodayProgress extends StatefulWidget {
-  const TodayProgress({Key? key}) : super(key: key);
+class MonthProgress extends StatefulWidget {
+  const MonthProgress({Key? key}) : super(key: key);
 
   @override
-  _TodayProgressState createState() => _TodayProgressState();
+  _MonthProgressState createState() => _MonthProgressState();
 }
 
-class _TodayProgressState extends State<TodayProgress> {
+class _MonthProgressState extends State<MonthProgress> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Today Progress'),
+        title: const Text('Month Progress'),
         backgroundColor: Colors.yellow[800],
       ),
       body: StreamBuilder(
           stream: FirebaseFirestore.instance
               .collection('Progress')
-              .where('time', isEqualTo: DateTime.now().day)
+              .where('month', isEqualTo: DateTime.now().month)
               .snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData) {

@@ -1,5 +1,6 @@
 import 'package:car_services/adminPages/admin_home_page.dart';
 import 'package:car_services/adminPages/all_progress.dart';
+import 'package:car_services/adminPages/month_progress.dart';
 import 'package:car_services/adminPages/profit.dart';
 import 'package:car_services/adminPages/today_progress.dart';
 import 'package:car_services/adminPages/workers.dart';
@@ -42,6 +43,12 @@ class _ServicesDashboardState extends State<ServicesDashboard> {
                       Icon(Icons.accessibility, size: 30, color: Colors.white),
                   title: 'Today processes',
                   nav: TodayProgress(),
+                ),
+                Card_d(
+                  icon:
+                      Icon(Icons.accessibility, size: 30, color: Colors.white),
+                  title: 'Month processes',
+                  nav: MonthProgress(),
                 ),
                 Card_d(
                   icon:

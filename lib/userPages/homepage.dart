@@ -73,7 +73,7 @@ class _HomepageState extends State<Homepage> {
           } else {
             return Scaffold(
               appBar: AppBar(
-                title: const Text('Admin Panel'),
+                title: const Text('Worker Panel'),
                 backgroundColor: Colors.yellow[800],
                 actions: [
                   IconBadge(

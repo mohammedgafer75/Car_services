@@ -31,69 +31,75 @@ class _ProfitState extends State<Profit> {
       ),
       body: Column(
         children: [
-          Row(
-            children: [
-              const Expanded(
-                  child: Text(
-                "day :",
-                style: TextStyle(color: Colors.black),
-              )),
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: DropdownButton(
-                    icon: const Icon(Icons.timer, color: Colors.black),
-                    iconEnabledColor: Colors.white,
-                    items: category.map((dropDownStringItem) {
-                      return DropdownMenuItem<num>(
-                        value: dropDownStringItem,
-                        child: Text('$dropDownStringItem'),
-                      );
-                    }).toList(),
-                    onChanged: (num? newValueSelected) {
-                      setState(() {
-                        day = newValueSelected!;
-                      });
-                    },
-                    value: day,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                const Expanded(
+                    child: Text(
+                  "day :",
+                  style: TextStyle(color: Colors.black),
+                )),
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: DropdownButton(
+                      icon: const Icon(Icons.timer, color: Colors.black),
+                      iconEnabledColor: Colors.white,
+                      items: category.map((dropDownStringItem) {
+                        return DropdownMenuItem<num>(
+                          value: dropDownStringItem,
+                          child: Text('$dropDownStringItem'),
+                        );
+                      }).toList(),
+                      onChanged: (num? newValueSelected) {
+                        setState(() {
+                          day = newValueSelected!;
+                        });
+                      },
+                      value: day,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-          Row(
-            children: [
-              const Expanded(
-                  child: Text(
-                "month :",
-                style: TextStyle(color: Colors.black),
-              )),
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: DropdownButton(
-                    icon: const Icon(Icons.timer, color: Colors.black),
-                    iconEnabledColor: Colors.white,
-                    items: monthlist.map((num dropDownStringItem) {
-                      return DropdownMenuItem<num>(
-                        value: dropDownStringItem,
-                        child: Text('$dropDownStringItem'),
-                      );
-                    }).toList(),
-                    onChanged: (num? newValueSelected) {
-                      setState(() {
-                        month = newValueSelected!;
-                      });
-                    },
-                    value: month,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                const Expanded(
+                    child: Text(
+                  "month :",
+                  style: TextStyle(color: Colors.black),
+                )),
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: DropdownButton(
+                      icon: const Icon(Icons.timer, color: Colors.black),
+                      iconEnabledColor: Colors.white,
+                      items: monthlist.map((num dropDownStringItem) {
+                        return DropdownMenuItem<num>(
+                          value: dropDownStringItem,
+                          child: Text('$dropDownStringItem'),
+                        );
+                      }).toList(),
+                      onChanged: (num? newValueSelected) {
+                        setState(() {
+                          month = newValueSelected!;
+                        });
+                      },
+                      value: month,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10.0),
